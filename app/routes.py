@@ -10,8 +10,8 @@ from app.tasks import create_exec_task, callback_update_exec, create_host_task
 def get_entities_from_db(database_class):
     all_entities = database_class.query.all()
     all_entities_dict = [entity.__dict__ for entity in all_entities]
-        for entity in all_entities_dict:
-            del entity['_sa_instance_state']
+    for entity in all_entities_dict:
+        del entity['_sa_instance_state']
     return all_entities_dict
 
 @app.route('/host', methods=['GET','POST'])
