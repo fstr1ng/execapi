@@ -1,0 +1,8 @@
+#!/bin/sh
+
+for line in $(cat settings.env); 
+  do 
+    export $line;
+  done
+
+flask run
