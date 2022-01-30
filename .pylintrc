@@ -1,0 +1,3 @@
+[MASTER]
+ignored-classes=SQLAlchemy,SQLObject,Registrant,scoped_session
+fail-under=8.5
