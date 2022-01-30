@@ -14,7 +14,10 @@ def create_exec_task(id, host, command):
     db.session.commit()
     ssh_client = paramiko.SSHClient()
     ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh_client.connect(hostname=database_host.address, username=database_host.user)
+    try:
+        ssh_client.connect(hostname=database_host.address, username=database_host.user, banner_timeout=200, key_filename='/root/.ssh/id_rsa_execapi')
+    except paramiko.SSHException:
+        return 'Connection failed'
     command += "\n"
     with ssh_client.invoke_shell() as ssh:
         time.sleep(0.5)
@@ -46,3 +49,4 @@ def create_host_task(name, address, user):
     db.session.add(database_host)
     db.session.commit()
     return database_host.id
+

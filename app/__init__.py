@@ -1,12 +1,15 @@
+import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from celery import Celery
 
+
 app = Flask(__name__)    
 app.config.update(    
-    CELERY_BROKER_URL='redis://localhost:6379',    
-    CELERY_RESULT_BACKEND='redis://localhost:6379',    
-    SQLALCHEMY_DATABASE_URI='sqlite:///sqlite.db'    
+    CELERY_BROKER_URL=os.environ['CELERY_BROKER_URL'],
+    CELERY_RESULT_BACKEND=os.environ['CELERY_RESULT_BACKEND'],
+    SQLALCHEMY_DATABASE_URI=os.environ['SQLALCHEMY_DATABASE_URI'],
     )
 
 db = SQLAlchemy(app)
