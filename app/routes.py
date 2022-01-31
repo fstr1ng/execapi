@@ -44,17 +44,20 @@ def host_one_endpoint(name):
         return jsonify(host_dict)
     if request.method == "POST":
         database_host = Host.query.filter_by(name=name).first()
+        host_id = database_host.id
         data = request.get_json()
         for key in data:
             try:
                 database_host.__getattribute__(key)
                 database_host.__setattr__(key, data[key])
-                host_dict = database_host.__dict__
-                del host_dict["_sa_instance_state"]
-                db.session.commit()
-                return jsonify(host_dict)
             except AttributeError:
                 return jsonify({"error": "no such attribute"})
+        db.session.add(database_host)
+        db.session.commit()
+        database_host = Host.query.filter_by(id=host_id).first()
+        host_dict = database_host.__dict__
+        del host_dict["_sa_instance_state"]
+        return jsonify(host_dict)
 
 
 @app.route("/exec", methods=["GET", "POST"])
